@@ -38,15 +38,38 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+@app.route('/users', methods=['GET'])
+def handle_users():
+    users = User.query.all()
+    response_body = []
+    for user in users:
+        response_body.append(user.serialize())
+
+
+    return jsonify(response_body), 200
+
+@app.route('/people', methods=['GET'])
+def handle_people():
+    people = People.query.all()
+    response_body = []
+    for people in people:
+        response_body.append(people.serialize())
+
+
+    return jsonify(response_body), 200
 
 @app.route('/planets', methods=['GET'])
 def handle_planets():
+    planets = Planets.query.all()
+    response_body = []
+    for planet in planets:
+        response_body.append(planet.serialize())
 
-    response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
 
     return jsonify(response_body), 200
+
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
