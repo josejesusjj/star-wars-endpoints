@@ -68,7 +68,19 @@ def handle_planets():
 
     return jsonify(response_body), 200
 
+@app.route('/people/<int:id>', methods=['GET'])
+def get_people_by_id(id):
+    people = People.get_by_id(id)
+    if people: 
+        return jsonify(people.serialize()), 200
+    return ({'error': 'Character not found'}), 404
 
+@app.route('/planets/<int:id>', methods=['GET'])
+def get_planet_by_id(id):
+    planet = Planets.get_by_id(id)
+    if planet: 
+        return jsonify(planet.serialize()), 200
+    return ({'error': 'Planet not found'}), 404
 
 
 # this only runs if `$ python src/main.py` is executed
