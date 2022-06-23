@@ -65,6 +65,13 @@ def handle_planets():
     for planet in planets:
         response_body.append(planet.serialize())
 
+@app.route('/favorites/<int:id>', methods=['GET'])
+def handle_favorite_planets(id):
+    favorites = FavoritesPlanets.query.filter_by(user_id = id).all()+FavoritesPeople.query.filter_by(user_id = id).all()
+    response_body = []
+    for favorite in favorites:
+        response_body.append(favorite.serialize())
+
 
     return jsonify(response_body), 200
 
