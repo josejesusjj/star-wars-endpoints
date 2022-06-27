@@ -52,10 +52,8 @@ def handle_users():
 def handle_people():
     people = People.query.all()
     response_body = []
-    for people in people:
-        response_body.append(people.serialize())
-
-
+    for character in people:
+        response_body.append(character.serialize())
     return jsonify(response_body), 200
 
 @app.route('/planets', methods=['GET'])
@@ -64,16 +62,7 @@ def handle_planets():
     response_body = []
     for planet in planets:
         response_body.append(planet.serialize())
-
-@app.route('/favorites/<int:id>', methods=['GET'])
-def handle_favorite_planets(id):
-    favorites = FavoritesPlanets.query.filter_by(user_id = id).all()+FavoritesPeople.query.filter_by(user_id = id).all()
-    response_body = []
-    for favorite in favorites:
-        response_body.append(favorite.serialize())
-
-
-    return jsonify(response_body), 200
+        return jsonify(response_body), 200
 
 @app.route('/people/<int:id>', methods=['GET'])
 def get_people_by_id(id):
@@ -88,6 +77,33 @@ def get_planet_by_id(id):
     if planet: 
         return jsonify(planet.serialize()), 200
     return ({'error': 'Planet not found'}), 404
+
+@app.route('/planetas', methods=['GET'])
+def handle_gentes():
+    planeta = Planets.query.all()
+    response_body = []
+    for mundo in planeta:
+        response_body.append(mundo.serialize())
+    return jsonify(response_body), 200
+
+
+@app.route('/favorites/<int:id>', methods=['GET'])
+def handle_favorite_planets(id):
+    favorites = FavoritesPlanets.query.filter_by(user_id = id).all()+FavoritesPeople.query.filter_by(user_id = id).all()
+    response_body = []
+    for favorite in favorites:
+        response_body.append(favorite.serialize())
+    return jsonify(response_body), 200
+
+@app.route('/favorite/planet/<int:id>', methods=['POST'])
+def add_favorite_planet(id):
+    #user_id = request.form.get('user_id')
+    user_id = 1
+    favorite = FavoritesPlanets( user_id = user_id, planets_id = id)
+    db.session.add(favorite)
+    db.session.commit()
+    return jsonify({'response': "added succesfully"}), 200
+
 
 
 # this only runs if `$ python src/main.py` is executed
